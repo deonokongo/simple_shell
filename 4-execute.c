@@ -1,4 +1,5 @@
 #include "shell.h"
+
 /**
  * execute_command - executes a command using fork and execvp.
  * @args: array of command arguments.
@@ -83,7 +84,8 @@ char *search_executable(const char *command, const char *path)
 {
 	char *token;
 	char *path_copy = malloc(strlen(path) + 1);
-	if (path_copy == NULL) {
+	if (path_copy == NULL)
+	{
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
@@ -92,8 +94,9 @@ char *search_executable(const char *command, const char *path)
 	token = my_strtok(path_copy, ':');
 	while (token != NULL)
 	{
-		char *found_path = malloc(strlen(token) + strlen(command) + 2); 
-		if (found_path == NULL) {
+		char *found_path = malloc(strlen(token) + strlen(command) + 2);
+		if (found_path == NULL)
+		{
 			perror("malloc");
 			exit(EXIT_FAILURE);
 		}
@@ -102,7 +105,7 @@ char *search_executable(const char *command, const char *path)
 		if (access(found_path, X_OK) == 0)
 		{
 			free(path_copy);
-			return found_path;
+			return (found_path);
 		}
 
 		free(found_path);
@@ -110,7 +113,7 @@ char *search_executable(const char *command, const char *path)
 	}
 
 	free(path_copy);
-	return NULL;
+	return (NULL);
 }
 /**
  * free_memory - Frees the allocated memory for command arguments, line, and found_path.
@@ -119,8 +122,9 @@ char *search_executable(const char *command, const char *path)
  * @found_path: A string representing the found executable path.
  *Return: void
  */
-void free_memory(char **argv, char *line, char *found_path) {
-	for (int i = 0; argv[i] != NULL; ++i) 
+void free_memory(char **argv, char *line, char *found_path)
+{
+	for (int i = 0; argv[i] != NULL; ++i)
 	{
 		free(argv[i]);
 	}

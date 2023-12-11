@@ -1,3 +1,5 @@
+#include "shell.h"
+
 /**
  * builtin_unsetenv - Handles the built-in 'unsetenv' command.
  * @args: The arguments for the 'unsetenv' command.
@@ -6,13 +8,13 @@
  */
 void builtin_unsetenv(char **args)
 {
-	if (args[1] == NULL) {
+	if (args[1] == NULL)
+	{
 		my_fprintf(stderr, "unsetenv: missing argument\n");
 		return;
 	}
-
 	char *variable = args[1];
-	if (unsetenv(variable) != 0) 
+	if (unsetenv(variable) != 0)
 	{
 		my_fprintf (stderr, "unsetenv: unable to unset variable '%s'\n", variable);
 		return;
@@ -26,14 +28,14 @@ void builtin_unsetenv(char **args)
  *
  * Return: void
  */
-void builtin_cd(char **args) 
+void builtin_cd(char **args)
 {
 	char *new_dir;
 
 	if (args[1] == NULL)
 	{
 		new_dir = getenv("HOME");
-		if (new_dir == NULL) 
+		if (new_dir == NULL)
 		{
 			my_fprintf(stderr, "cd: HOME not set\n");
 			return;
@@ -41,11 +43,13 @@ void builtin_cd(char **args)
 	} else if (strcmp(args[1], "-") == 0)
 	{
 		new_dir = getenv("OLDPWD");
-		if (new_dir == NULL) {
+		if (new_dir == NULL)
+		{
 			my_fprintf(stderr, "cd: -: OLDPWD not set\n");
 			return;
 		}
-	} else 
+	}
+	else
 	{
 		new_dir = args[1];
 	}
@@ -56,7 +60,8 @@ void builtin_cd(char **args)
 		return;
 	}
 
-	if (chdir(new_dir) != 0) {
+	if (chdir(new_dir) != 0)
+	{
 		perror("cd");
 		return;
 	}

@@ -1,4 +1,5 @@
 #include "shell.h"
+
 /**
  * hash_function - Generates a hash value for a given key.
  * @key: The key to hash.
@@ -8,10 +9,11 @@
 unsigned int hash_function(const char *key)
 {
 	unsigned int hash = 0;
-	while (*key) {
+	while (*key)
+	{
 		hash = (hash << 5) + *key++;
 	}
-	return hash % HASH_TABLE_SIZE;
+	return (hash % HASH_TABLE_SIZE);
 }
 /**
  * hash_table_put - Adds a key-value pair to the hash table.
@@ -31,11 +33,11 @@ void hash_table_put(const char *key, const char *value)
 	if (hash_table[index] == NULL)
 	{
 		hash_table[index] = new_pair;
-	} 
-	else 
+	}
+	else
 	{
 		KeyValuePair *current = hash_table[index];
-		while (current->next != NULL) 
+		while (current->next != NULL)
 		{
 			current = current->next;
 		}
@@ -47,20 +49,21 @@ void hash_table_put(const char *key, const char *value)
  * @key: The key to search for.
  * Return: The value associated with the key, or NULL if not found.
  */
-const char *hash_table_get(const char *key) 
+const char *hash_table_get(const char *key)
 {
 	unsigned int index = hash_function(key);
 
 	KeyValuePair *current = hash_table[index];
-	while (current != NULL) {
-		if (strcmp(current->key, key) == 0) 
+	while (current != NULL)
+	{
+		if (strcmp(current->key, key) == 0)
 		{
-			return current->value;
+			return (current->value);
 		}
 		current = current->next;
 	}
 
-	return NULL;
+	return (NULL);
 }
 
 

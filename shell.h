@@ -10,17 +10,20 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-struct FileInfo {
+struct FileInfo
+{
     int is_atty;
     int is_open_read;
 };
 typedef void (*builtin_func)(char **args);
 
-struct builtin {
+struct builtin
+{
     char *name;
     builtin_func func;
 };
-typedef struct KeyValuePair {
+typedef struct KeyValuePair
+{
     char *key;
     char *value;
     struct KeyValuePair *next;
@@ -66,7 +69,7 @@ void builtin_setenv(char **args);
 void builtin_unsetenv(char **args);
 unsigned int hash_function(const char *key);
 void hash_table_put(const char *key, const char *value);
-void print_all_aliases();
+void print_all_aliases(void);
 void builtin_alias(char *argv[]);
 void my_redirection(char *command, char *output_file, char *error_file);
 char *replace_variable(char *command, const char *variable, const char *value) ‘
