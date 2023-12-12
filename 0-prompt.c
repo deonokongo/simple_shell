@@ -1,4 +1,5 @@
 #include "shell.h"
+
 /**
  * prompt - displays the shell command prompt
  * Return: void

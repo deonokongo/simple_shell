@@ -25,9 +25,7 @@ int run_shell_from_file(char *filename)
 			system(line);
 		}
 	}
-
 	fclose(file);
 	return (0);
 }
-
 

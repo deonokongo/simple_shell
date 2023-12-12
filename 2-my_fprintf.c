@@ -1,4 +1,5 @@
 #include "shell.h"
+
 /**
  * my_fprintf - for formatted output to a file stream
  * @file: file stream

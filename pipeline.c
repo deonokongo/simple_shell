@@ -1,3 +1,4 @@
+#include "shell.h"
 /**
  * create_pipe - Create a pipe and return the file descriptors.
  *
@@ -68,30 +69,28 @@ void run_single_command(char *command, int write_fd)
 	waitpid(child_pid, NULL, 0);
 }
 /**
- * run_pipeline - Execute a command pipeline.
- * @command: The command containing pipeline.
+ * run_pipeline - Runs a pipeline of shell commands.
+ * @command: The command string containing the pipeline
  * Return: void
  */
 void run_pipeline(char *command)
-{
 	while (*command != '\0')
+{
+	int *pipe_fds = create_pipe();
+
+	run_single_command(command, pipe_fds[1]);
+	close(pipe_fds[1]);
+
+	while (*command != '\0' && *command != '|')
 	{
-		int *pipe_fds = create_pipe();
-
-		run_single_command(command, pipe_fds[1]);
-		close(pipe_fds[1]);
-
-		while (*command != '\0' && *command != '|')
-		{
-			command++;
-		}
-
-		if (*command == '|')
-		{
-			command++;
-		}
-
-		close(pipe_fds[0]);
+		command++;
 	}
-}
 
+	if (*command == '|')
+	{
+		command++;
+	}
+
+	close(pipe_fds[0]);
+}
+}
