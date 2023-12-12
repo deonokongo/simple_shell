@@ -69,8 +69,11 @@ void hash_table_put(const char *key, const char *value);
 void print_all_aliases();
 void builtin_alias(char *argv[]);
 void my_redirection(char *command, char *output_file, char *error_file);
-char *replace_variable(char *command, const char *variable, const char *value) ‘
+char *replace_variable(char *command, const char *variable, const char *value);
 void run_pipeline(char *command);
-int run_shell_from_file(char *filename) ;
+int run_shell_from_file(char *filename);
+int change_directory(const char *new_dir);
+void print_current_directory(void);
+void builtin_cd(char **args);
 
 #endif

@@ -11,10 +11,10 @@ int is_builtin(char *command)
 	{
 		if (strcmp(command, builtin->name) == 0)
 		{
-			return 1;
+			return (1);
 		}
 	}
-	return 0;
+	return (0);
 }
 /**
  * execute_builtin - Executes a built-in command.
@@ -24,6 +24,7 @@ int is_builtin(char *command)
 void execute_builtin(char **args)
 {
 	char *command = args[0];
+
 	for (struct builtin *builtin = builtins; builtin->name != NULL; builtin++)
 	{
 		if (strcmp(command, builtin->name) == 0)
@@ -44,6 +45,7 @@ void builtin_exit(char **args)
 	if (args[1] != NULL)
 	{
 		int exit_status = atoi(args[1]);
+
 		exit(exit_status);
 	}
 	else
@@ -59,7 +61,8 @@ void builtin_exit(char **args)
  */
 void builtin_env(char **args)
 {
-	extern char **environ;
+	char **environ;
+
 	for (char **envp = environ; *envp != NULL; envp++)
 	{
 		print_kide("%s\n", *envp);
@@ -71,16 +74,17 @@ void builtin_env(char **args)
  *
  * Return: void
  */
-void builtin_setenv(char **args) 
+void builtin_setenv(char **args)
 {
-	if (args[1] == NULL || args[2] == NULL) 
+	if (args[1] == NULL || args[2] == NULL)
 	{
 		my_fprintf(stderr, "setenv: missing arguments\n");
 		return;
 	}
 	char *variable = args[1];
 	char *value = args[2];
-	if (setenv(variable, value, 1) != 0) 
+
+	if (setenv(variable, value, 1) != 0)
 	{
 		print_kide(stderr, "setenv: unable to set variable '%s'\n", variable);
 		return;

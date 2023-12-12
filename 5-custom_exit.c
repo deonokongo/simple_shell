@@ -1,6 +1,6 @@
 #include "shell.h"
 /**
- * custom_exit - Exits the program with a specified status, closing any open file.
+ * custom_exit - Exits the program with a specified status
  * @status: The exit status code.
  * Return: void
  */
@@ -23,20 +23,20 @@ int is_atty(int fd)
 {
 	if (fd < 0 || fd >= _NFILE)
 	{
-		return 0;
+		return (0);
 	}
 
 	if (!_file_table[fd].is_atty)
 	{
-		return 0;
+		return (0);
 	}
 
 	if (!_file_table[fd].is_open_read)
 	{
-		return 0;
+		return (0);
 	}
 
-	return 1;
+	return (1);
 }
 /**
  * is_open_read - Checks if a file descriptor is open for reading.
@@ -49,10 +49,10 @@ int is_open_read(int fd)
 
 	if (flags != -1 && (flags & O_ACCMODE) == O_RDONLY)
 	{
-		return 1;
+		return (1);
 	}
 
-	return 0;
+	return (0);
 }
 /**
  * is_interactive_mode - Checks if the program is running in interactive mode.
@@ -61,7 +61,10 @@ int is_open_read(int fd)
  */
 int is_interactive_mode(void)
 {
-	return is_atty(STDIN_FILENO) && is_atty(STDOUT_FILENO) && is_atty(STDERR_FILENO);
+	return (is_atty(STDIN_FILENO) &&
+			is_atty(STDOUT_FILENO) &&
+			is_atty(STDERR_FILENO));
 }
+
 
 

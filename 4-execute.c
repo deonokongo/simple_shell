@@ -17,9 +17,10 @@ void execute_command(const char *args[])
 	else if (child_p > 0)
 	{
 		int status;
-		waitpid(child_pid, &status, 0);
 
+		waitpid(child_pid, &status, 0);
 		char status_str[10];
+
 		snprintf(status_str, sizeof(status_str), "%d", WEXITSTATUS(status));
 		setenv("?", status_str, 1);
 	}
@@ -34,7 +35,7 @@ void execute_command(const char *args[])
 	}
 }
 /**
- * execute_process - Executes a process by creating a child process and using execv.
+ * execute_process - Executes a process
  * @command: The command to be executed.
  * @path: The path to search for the executable.
  *Return: 0 or 1 on success
@@ -46,10 +47,10 @@ void execute_process(const char *command, const char *path)
 	if (child_p == 0)
 	{
 		char *found_path = search_executable(command, path);
+
 		if (found_path != NULL)
 		{
 			execv(found_path, (char *const[]){found_path, NULL});
-
 			perror("Error executing command");
 			exit(EXIT_FAILURE);
 		}
@@ -74,7 +75,7 @@ void execute_process(const char *command, const char *path)
 	}
 }
 /**
- * search_executable - Searches for the executable path of a command in the specified path.
+ * search_executable - Searches for the executable path of a command
  * @command: The command to find the executable path for.
  * @path: The path to search for the executable.
  *Return: dynamically allocated string
@@ -83,17 +84,21 @@ char *search_executable(const char *command, const char *path)
 {
 	char *token;
 	char *path_copy = malloc(strlen(path) + 1);
-	if (path_copy == NULL) {
+
+	if (path_copy == NULL)
+	{
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
 	copy_string(path_copy, path);
-
 	token = my_strtok(path_copy, ':');
+
 	while (token != NULL)
 	{
-		char *found_path = malloc(strlen(token) + strlen(command) + 2); 
-		if (found_path == NULL) {
+		char *found_path = malloc(strlen(token) + strlen(command) + 2);
+
+		if (found_path == NULL)
+		{
 			perror("malloc");
 			exit(EXIT_FAILURE);
 		}
@@ -102,7 +107,7 @@ char *search_executable(const char *command, const char *path)
 		if (access(found_path, X_OK) == 0)
 		{
 			free(path_copy);
-			return found_path;
+			return (found_path);
 		}
 
 		free(found_path);
@@ -110,17 +115,18 @@ char *search_executable(const char *command, const char *path)
 	}
 
 	free(path_copy);
-	return NULL;
+	return (NULL);
 }
 /**
- * free_memory - Frees the allocated memory for command arguments, line, and found_path.
+ * free_memory - Frees the allocated memory for command arguments
  * @argv: An array of strings representing command arguments.
  * @line: A string representing the command line.
- * @found_path: A string representing the found executable path.
+ * @found_path: found executable path
  *Return: void
  */
-void free_memory(char **argv, char *line, char *found_path) {
-	for (int i = 0; argv[i] != NULL; ++i) 
+void free_memory(char **argv, char *line, char *found_path)
+{
+	for (int i = 0; argv[i] != NULL; ++i)
 	{
 		free(argv[i]);
 	}
