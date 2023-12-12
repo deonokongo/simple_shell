@@ -1,34 +1,64 @@
 #include "shell.h"
 
 /**
- * print_all_aliases - Prints all key-value pairs in the hash table
+ * print_aliases - Print all aliases in the alias table
  * Return: void
  */
-void print_all_aliases(void)
+void print_aliases(void)
 {
-	for (int i = 0; i < HASH_TABLE_SIZE; ++i)
+	for (KeyValuePair * pair = hash_table_begin(alias_table); pair != NULL;
+			pair = hash_table_next(alias_table))
 	{
-		KeyValuePair *current = hash_table[i];
-		while (current != NULL)
-		{
-			print_kide("%s='%s'\n", current->key, current->value);
-			current = current->next;
-		}
+		print_kide("%s='%s'\n", pair->key, pair->value);
 	}
 }
+
 /**
- * builtin_alias - Handles alias built-in command.
- * @argv: Array of command-line arguments
- *Return: void
+ * print_alias_not_found - Print a message for an alias not found
+ * @alias_name: Name of the alias
+ * Return: void
  */
-void builtin_alias(char *argv[])
+void print_alias_not_found(const char *alias_name)
+{
+	print_kide("%s: alias not found\n", alias_name);
+}
+
+/**
+ * update_alias_table - Update the alias table with a new alias definition
+ * @definition: Alias definition
+ * Return: void
+ */
+void update_alias_table(const char *definition)
+{
+	char *name, *value;
+
+	if (strchr(definition, '=') != NULL)
+	{
+		name = definition;
+		value = strchr(definition, '=') + 1;
+
+		if (hash_table_contains(alias_table, name))
+		{
+			free(hash_table_get(alias_table, name));
+		}
+		hash_table_put(alias_table, name, strdup(value));
+	}
+	else
+	{
+		print_kide("Invalid alias definition: '%s'\n", definition);
+	}
+}
+
+/**
+ * handle_alias_command - Handle the alias built-in command
+ * @argv: Array of command-line arguments
+ * Return: void
+ */
+void handle_alias_command(char *argv[])
 {
 	if (argv[1] == NULL)
 	{
-		for (KeyValuePair *pair = hash_table_begin(alias_table); pair != NULL; pair = hash_table_next(alias_table))
-		{
-			print_kide("%s='%s'\n", pair->key, pair->value);
-		}
+		print_aliases();
 	}
 	else if (argv[2] == NULL)
 	{
@@ -36,13 +66,14 @@ void builtin_alias(char *argv[])
 		{
 			char *alias_name = argv[i];
 			char *value = hash_table_get(alias_table, alias_name);
+
 			if (value)
 			{
 				print_kide("%s='%s'\n", alias_name, value);
 			}
 			else
 			{
-				print_kide("%s: alias not found\n", alias_name);
+				print_alias_not_found(alias_name);
 			}
 		}
 	}
@@ -50,23 +81,7 @@ void builtin_alias(char *argv[])
 	{
 		for (int i = 1; argv[i] != NULL; ++i)
 		{
-			char *definition = argv[i];
-			char *name, *value;
-			if (strchr(definition, '=') != NULL)
-			{
-				name = definition;
-				value = strchr(definition, '=') + 1;
-
-				if (hash_table_contains(alias_table, name))
-				{
-					free(hash_table_get(alias_table, name));
-				}
-				hash_table_put(alias_table, name, strdup(value));
-			}
-			else
-			{
-				print_kide("Invalid alias definition: '%s'\n", definition);
-			}
+			update_alias_table(argv[i]);
 		}
 	}
 }

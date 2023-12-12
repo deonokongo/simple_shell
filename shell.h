@@ -69,8 +69,6 @@ void builtin_setenv(char **args);
 void builtin_unsetenv(char **args);
 unsigned int hash_function(const char *key);
 void hash_table_put(const char *key, const char *value);
-void print_all_aliases(void);
-void builtin_alias(char *argv[]);
 void my_redirection(char *command, char *output_file, char *error_file);
 char *replace_variable(char *command, const char *variable, const char *value);
 void run_pipeline(char *command);
@@ -78,5 +76,12 @@ int run_shell_from_file(char *filename);
 int change_directory(const char *new_dir);
 void print_current_directory(void);
 void builtin_cd(char **args);
+int *create_pipe(void);
+void run_single_command(char *command, int write_fd);
+void run_pipeline(char *command);
+void print_aliases(void);
+void print_alias_not_found(const char *alias_name);
+void update_alias_table(const char *definition);
+void handle_alias_command(char *argv[]);
 
 #endif
