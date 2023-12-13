@@ -11,7 +11,7 @@ int run_shell_from_file(char *filename)
 
 	if (!file)
 	{
-		print_kide("Error: Unable to open file '%s'\n", filename);
+		print_kide(filename);
 		return (1);
 	}
 	char line[MAX_LINE_LENGTH];

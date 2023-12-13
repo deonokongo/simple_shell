@@ -1,50 +1,49 @@
 #include "shell.h"
+#include <stdbool.h>
+
 /**
- * my_strtok - that splits a string into tokens
- *
- * @str: string input
- * @delimiter: separator
- *
- * Return: token
+ * my_strtok - Splits a string into tokens based on a delimiter.
+ * @str: The input string.
+ * @delimiter: The delimiter used for tokenization.
+ * Return: A pointer to the next token
  */
 char *my_strtok(char *str, char delimiter)
 {
 	static char *current;
+	char *start = current;
 
-	if (!str)
-	{
-		current = NULL;
-		return (NULL);
-	}
-
-	if (!current)
+	if (str != NULL)
 	{
 		current = str;
 	}
-	char *token = current;
 
-	while (*current != delimiter && *current != '\0')
+	if (current == NULL || *current == '\0')
+	{
+		return (NULL);
+	}
+	while (*current != '\0' && *current != delimiter)
 	{
 		current++;
 	}
-	if (*current == '\0')
-	{
-		current = NULL;
-		return (token);
-	}
-	*current = '\0';
-	current++;
 
-	return (token);
+	if (*current == delimiter)
+	{
+		*current = '\0';
+		current++;
+	}
+
+	return (start);
 }
+
 /**
- * my_getline - Reads a line from stdin
- * @line: A pointer to the buffer
+ * my_getline - Read a line from standard input.
+ * @line: A pointer to a pointer to the line.
  * @buffer: A pointer to the size of the buffer.
- * Return: bytesRead
+ * Return: The number of bytes read.
  */
 int my_getline(char **line, size_t *buffer)
 {
+	int i;
 	bool in_comment = false;
 
 	ssize_t bytesRead = getline(line, buffer, stdin);
@@ -61,7 +60,7 @@ int my_getline(char **line, size_t *buffer)
 			exit(EXIT_FAILURE);
 		}
 	}
-	for (int i = 0; i < bytesRead; ++i)
+	for (i = 0; i < bytesRead; ++i)
 	{
 		if (in_comment && (*line)[i] == '\n')
 		{
@@ -72,7 +71,9 @@ int my_getline(char **line, size_t *buffer)
 			in_comment = true;
 		}
 	}
-	remove_newline(*line);
-	return (bytesRead);
 
+	remove_newline(*line);
+
+	return (bytesRead);
 }
+

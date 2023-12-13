@@ -1,3 +1,5 @@
+#include "shell.h"
+#include <limits.h>
 /**
  * change_directory - Changes the current working directory.
  * @new_dir: The directory to change to.
@@ -6,6 +8,8 @@
  */
 int change_directory(const char *new_dir)
 {
+	char old_pwd[PATH_MAX];
+
 	if (access(new_dir, R_OK | X_OK) != 0)
 	{
 		my_fprintf(stderr, "cd: %s: No such file or directory\n", new_dir);
@@ -17,9 +21,6 @@ int change_directory(const char *new_dir)
 		perror("cd");
 		return (-1);
 	}
-
-	char old_pwd[PATH_MAX];
-
 	if (getcwd(old_pwd, sizeof(old_pwd)) == NULL)
 	{
 		perror("getcwd");

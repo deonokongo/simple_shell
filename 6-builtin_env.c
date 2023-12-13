@@ -1,21 +1,26 @@
 #include "shell.h"
+#include <stdio.h>
+#include <stdlib.h>
+
 /**
  * is_builtin - Checks if a given command is a built-in command.
  * @command: The command to check.
  *
- * Return:  1 if the command is a built-in, 0 otherwise.
+ * Return: 1 if the command is a built-in, 0 otherwise.
  */
 int is_builtin(char *command)
 {
-	for (struct builtin *builtin = builtins; builtin->name != NULL; builtin++)
+	struct builtin *builtin;
+
+	for (builtin = builtins; builtin->name != NULL; builtin++)
 	{
 		if (strcmp(command, builtin->name) == 0)
-		{
 			return (1);
-		}
 	}
+
 	return (0);
 }
+
 /**
  * execute_builtin - Executes a built-in command.
  * @args: The arguments for the built-in command.
@@ -23,9 +28,12 @@ int is_builtin(char *command)
  */
 void execute_builtin(char **args)
 {
-	char *command = args[0];
+	struct builtin *builtin;
 
-	for (struct builtin *builtin = builtins; builtin->name != NULL; builtin++)
+	char *command = args[0];
+	const char *error_message = "Error: Unknown command '%s'\n";
+
+	for (builtin = builtins; builtin->name != NULL; builtin++)
 	{
 		if (strcmp(command, builtin->name) == 0)
 		{
@@ -33,8 +41,9 @@ void execute_builtin(char **args)
 			return;
 		}
 	}
-	printf("Error: Unknown command '%s'\n", command);
+	my_fprintf(stderr, error_message, command);
 }
+
 /**
  * builtin_exit - Handles the built-in 'exit' command.
  * @args: The arguments for the 'exit' command.
@@ -53,43 +62,44 @@ void builtin_exit(char **args)
 		exit(0);
 	}
 }
+
 /**
  * builtin_env - Handles the built-in 'env' command.
- * @args: The arguments for the 'env' command.
- *
+ * @environ: 'env' command.
  * Return: void
  */
-void builtin_env(char **args)
+void builtin_env(char **environ)
 {
-	char **environ;
-
-	for (char **envp = environ; *envp != NULL; envp++)
+	while (*environ)
 	{
-		print_kide("%s\n", *envp);
+		print_kide(*environ);
+		environ++;
 	}
 }
+
 /**
  * builtin_setenv - Handles the built-in 'setenv' command.
  * @args: The arguments for the 'setenv' command.
- *
  * Return: void
  */
 void builtin_setenv(char **args)
 {
-	if (args[1] == NULL || args[2] == NULL)
-	{
-		my_fprintf(stderr, "setenv: missing arguments\n");
-		return;
-	}
 	char *variable = args[1];
 	char *value = args[2];
+	char message[1024];
+
+	if (args[1] == NULL || args[2] == NULL)
+	{
+		fprintf(stderr, "setenv: missing arguments\n");
+		return;
+	}
 
 	if (setenv(variable, value, 1) != 0)
 	{
-		print_kide(stderr, "setenv: unable to set variable '%s'\n", variable);
+		fprintf(stderr, "setenv: unable to set variable '%s'\n", variable);
 		return;
 	}
-
-	print_kide("%s=%s\n", variable, value);
+	sprintf(message, "%s=%s\n", variable, value);
+	print_kide(message);
 }
 

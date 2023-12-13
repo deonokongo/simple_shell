@@ -74,23 +74,26 @@ void run_single_command(char *command, int write_fd)
  * Return: void
  */
 void run_pipeline(char *command)
-	while (*command != '\0')
 {
-	int *pipe_fds = create_pipe();
+        char *commands[MAX_COMMANDS];
+        int num_commands;
 
-	run_single_command(command, pipe_fds[1]);
-	close(pipe_fds[1]);
+        num_commands = split_pipeline(command, commands);
 
-	while (*command != '\0' && *command != '|')
-	{
-		command++;
-	}
+        int *pipe_fds = create_pipe();
 
-	if (*command == '|')
-	{
-		command++;
-	}
+        run_single_command(command, pipe_fds[1]);
+        close(pipe_fds[1]);
 
-	close(pipe_fds[0]);
-}
+        while (*command != '\0' && *command != '|')
+        {
+                command++;
+        }
+
+        if (*command == '|')
+        {
+                command++;
+        }
+
+        close(pipe_fds[0]);
 }
