@@ -34,7 +34,8 @@ void execute_builtin(char **args)
 		}
 	}
 	const char *error_message = "Error: Unknown command '%s'\n";
-	sprintf((char *)error_message, error_message, command);	
+
+	sprintf((char *)error_message, error_message, command);
 }
 /**
  * builtin_exit - Handles the built-in 'exit' command.
@@ -56,7 +57,7 @@ void builtin_exit(char **args)
 }
 /**
  * builtin_env - Handles the built-in 'env' command.
- * @args: The arguments for the 'env' command.
+ * @environ: 'env' command.
  *
  * Return: void
  */
@@ -91,6 +92,7 @@ void builtin_setenv(char **args)
 		return;
 	}
 	char message[1024];
+
 	sprintf(message, "%s=%s\n", variable, value);
 	print_kide((const char *)message);
 }

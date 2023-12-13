@@ -5,6 +5,7 @@ char *my_strtok(char *str, char delimiter);
 /**
  * execute_command - executes a command using fork and execvp.
  * @args: array of command arguments.
+ * @command: command to exacute
  *Return: 0 or 1 on success
  */
 void execute_command(const char *command, const char *args[])
@@ -106,6 +107,7 @@ char *search_executable(const char *command, const char *path)
 			exit(EXIT_FAILURE);
 		}
 		FILE *fp = fopen(found_path, "w");
+
 		if (!fp)
 		{
 			perror("fopen");
