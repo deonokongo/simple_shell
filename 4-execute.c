@@ -23,9 +23,9 @@ void execute_command(const char *command)
 	else if (child_p > 0)
 	{
 		int status;
-		char status_str[10];
 
 		waitpid(child_p, &status, 0);
+		char status_str[10];
 		snprintf(status_str, sizeof(status_str), "%d", WEXITSTATUS(status));
 		setenv("?", status_str, 1);
 	}
@@ -40,105 +40,92 @@ void execute_command(const char *command)
 	}
 }
 /**
- * execute_process - Executes a process.
- * @command: The command to be executed.
- * @path: The path to search for the executable.
+ * execute_process - Executes a command in a child process.
+ * @command: The command to execute.
+ * @path: The PATH environment variable to search for the executable.
  * Return: void
  */
 void execute_process(const char *command, const char *path)
 {
-	char *found_path = search_executable(command, path);
+    pid_t child_p = fork();
 
-	pid_t child_p = fork();
+    if (child_p == 0)
+    {
+        char *found_path = search_executable(command, path);
 
-	if (child_p == 0)
-	{
-		char *exec_args[2];
-
-		exec_args[0] = found_path;
-		exec_args[1] = NULL;
-
-		if (found_path != NULL)
-		{
-			execv(found_path, exec_args);
-			perror("Error executing command");
-			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			my_fprintf(stderr, "Command not found: %s\n", command);
-			exit(EXIT_FAILURE);
-		}
-	}
-	else if (child_p > 0)
-	{
-		wait(NULL);
-	}
-	else if (child_p == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		perror("Error forking process");
-	}
+        if (found_path != NULL)
+        {
+            execv(found_path, (char *const[]){found_path, NULL});
+            perror("Error executing command");
+            exit(EXIT_FAILURE);
+        }
+        else
+        {
+            my_fprintf(stderr, "Command not found: %s\n", command);
+            exit(EXIT_FAILURE);
+        }
+    }
+    else if (child_p > 0)
+    {
+        wait(NULL);
+    }
+    else if (child_p == -1)
+    {
+        perror("fork");
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        perror("Error forking process");
+    }
 }
 /**
- * search_executable - Searches for the executable path of a command.
- * @command: Command to find the executable path for.
- * @path: Path to search for the executable.
- * Return: Dynamically allocated string.
+ * search_executable - Search for an executable file in the specified path.
+ * @command: The command to search for.
+ * @path: The path to search for the command.
+ * Return: A dynamically allocated string containing the full path to the
+ *         executable if found, or NULL if not found.
  */
 char *search_executable(const char *command, const char *path)
 {
-	char *token;
-	FILE *fp;
+    char *token;
+    char *path_copy = malloc(strlen(path) + 1);
 
-	char *found_path = NULL;
-	char *path_copy = malloc(strlen(path) + 1);
+    if (path_copy == NULL)
+    {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
 
-	if (path_copy == NULL)
+    copy_string(path_copy, path);
+    token = my_strtok(path_copy, ':');
+
+    while (token != NULL)
+    {
+        char *found_path = malloc(strlen(token) + strlen(command) + 2);
+
+        if (found_path == NULL)
 	{
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
-	copy_string(path_copy, path);
-	token = my_strtok(path_copy, ':');
+            perror("malloc");
+            exit(EXIT_FAILURE);
+        }
 
-	while (token != NULL)
-	{
-		found_path = malloc(strlen(token) + strlen(command) + 2);
+        my_fprintf(found_path, "%s/%s", token, command);
 
-		if (found_path == NULL)
-		{
-			perror("malloc");
-			exit(EXIT_FAILURE);
-		}
-		fp = fopen(found_path, "w");
-		if (!fp)
-		{
-			perror("fopen");
-			free(found_path);
-			continue;
-		}
+        if (access(found_path, X_OK) == 0)
+        {
+            free(path_copy);
+            return (found_path);
+        }
 
-		my_fprintf(fp, "%s/%s", token, command);
-		fclose(fp);
+        free(found_path);
+        token = my_strtok(NULL, ':');
+    }
 
-		if (access(found_path, X_OK) == 0)
-		{
-			free(path_copy);
-			return (found_path);
-		}
-
-		free(found_path);
-		token = my_strtok(NULL, ':');
-	}
-
-	free(path_copy);
-	return (NULL);
+    free(path_copy);
+    return (NULL);
 }
+
 /**
  * free_memory - Frees the allocated memory for command arguments.
  * @argv: An array of strings representing command arguments.
