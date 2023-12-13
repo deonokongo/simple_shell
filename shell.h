@@ -18,11 +18,6 @@ struct FileInfo {
 };
 typedef void (*builtin_func)(char **);
 
-struct builtin {
-    const char *name;
-    builtin_func func;
-};
-
 void builtin_exit(char **args);
 void builtin_env(char **args);
 void builtin_setenv(char **args);
@@ -45,6 +40,7 @@ struct builtin builtins[] = {
 #define _NFILE 1024
 #define BUFFER_SIZE 1024
 #define MAX_ARGS 64
+#define MAX_COMMANDS 10
 #define MAX_LINE_LENGTH 1024
 #define HASH_TABLE_SIZE 100
 
@@ -75,6 +71,8 @@ void hash_table_put(const char *key, const char *value);
 void my_redirection(char *command, char *output_file, char *error_file);
 char *replace_variable(char *command, const char *variable, const char *value);
 void run_pipeline(char *command);
+int is_builtin(const char *command);
+void execute_builtin(char **args);
 int run_shell_from_file(char *filename);
 int change_directory(const char *new_dir);
 void print_current_directory(void);
@@ -85,6 +83,7 @@ void run_pipeline(char *command);
 void print_aliases(void);
 void print_alias_not_found(const char *alias_name);
 void update_alias_table(const char *definition);
+int split_pipeline(const char *command, char *commands[MAX_COMMANDS]);
 void handle_alias_command(char *argv[]);
 
 #endif
