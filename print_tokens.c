@@ -27,10 +27,10 @@ void print_tokens(const char *command)
 	print_kide("Tokens: ");
 	for (int i = 0; i < argc; ++i)
 	{
-		print_kide("%s ", argv[i]);
+		print_kide(argv[i]);
 	}
 	print_kide("\n");
 
-	free_memory(argv);
+	free_memory(argv, NULL, NULL);
 }
 

@@ -1,3 +1,5 @@
+#include "shell.h"
+#include <limits.h>
 /**
  * change_directory - Changes the current working directory.
  * @new_dir: The directory to change to.

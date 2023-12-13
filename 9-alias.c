@@ -1,4 +1,6 @@
+#include "hash_table.h"
 #include "shell.h"
+hash_table *alias_table;
 
 /**
  * print_aliases - Print all aliases in the alias table
@@ -6,11 +8,10 @@
  */
 void print_aliases(void)
 {
-	for (KeyValuePair * pair = hash_table_begin(alias_table); pair != NULL;
-			pair = hash_table_next(alias_table))
-	{
-		print_kide("%s='%s'\n", pair->key, pair->value);
-	}
+    for (KeyValuePair *pair = hash_table_begin(alias_table); pair; pair = hash_table_next(alias_table))
+    {
+        print_kide(pair->value);
+    }
 }
 
 /**
@@ -20,7 +21,7 @@ void print_aliases(void)
  */
 void print_alias_not_found(const char *alias_name)
 {
-	print_kide("%s: alias not found\n", alias_name);
+    print_kide(alias_name);
 }
 
 /**
@@ -30,23 +31,26 @@ void print_alias_not_found(const char *alias_name)
  */
 void update_alias_table(const char *definition)
 {
-	char *name, *value;
+    char *name, *value;
 
-	if (strchr(definition, '=') != NULL)
-	{
-		name = definition;
-		value = strchr(definition, '=') + 1;
+    if (strchr(definition, '=') != NULL)
+    {
+        name = strdup(definition);
+        value = strchr(definition, '=') + 1;
 
-		if (hash_table_contains(alias_table, name))
-		{
-			free(hash_table_get(alias_table, name));
-		}
-		hash_table_put(alias_table, name, strdup(value));
-	}
-	else
-	{
-		print_kide("Invalid alias definition: '%s'\n", definition);
-	}
+        if (hash_table_contains(alias_table, name))
+        {
+            free(hash_table_get(alias_table, name));
+        }
+
+        value = strdup(definition);
+        hash_table_put(alias_table, name, value);
+        free(value);
+    }
+    else
+    {
+        print_kide(definition);
+    }
 }
 
 /**
@@ -56,33 +60,16 @@ void update_alias_table(const char *definition)
  */
 void handle_alias_command(char *argv[])
 {
-	if (argv[1] == NULL)
-	{
-		print_aliases();
-	}
-	else if (argv[2] == NULL)
-	{
-		for (int i = 1; argv[i] != NULL; ++i)
-		{
-			char *alias_name = argv[i];
-			char *value = hash_table_get(alias_table, alias_name);
-
-			if (value)
-			{
-				print_kide("%s='%s'\n", alias_name, value);
-			}
-			else
-			{
-				print_alias_not_found(alias_name);
-			}
-		}
-	}
-	else
-	{
-		for (int i = 1; argv[i] != NULL; ++i)
-		{
-			update_alias_table(argv[i]);
-		}
-	}
+    if (argv[1] == NULL)
+    {
+        print_aliases();
+    }
+    else
+    {
+        for (int i = 1; argv[i] != NULL; ++i)
+        {
+            char *alias_name = argv[i];
+            update_alias_table(argv[i]);
+        }
+    }
 }
-

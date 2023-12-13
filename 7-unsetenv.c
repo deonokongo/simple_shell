@@ -7,12 +7,6 @@
  */
 void builtin_unsetenv(char **args)
 {
-	if (args[1] == NULL)
-	{
-		my_fprintf(stderr, "unsetenv: missing argument\n");
-		return;
-	}
-
 	char *variable = args[1];
 
 	if (args[1] == NULL)
@@ -20,13 +14,12 @@ void builtin_unsetenv(char **args)
 		my_fprintf(stderr, "unsetenv: missing argument\n");
 		return;
 	}
-	char *variable = args[1];
-
 	if (unsetenv(variable) != 0)
 	{
 		my_fprintf(stderr, "unsetenv: unable to unset variable '%s'\n", variable);
-		return;
+		exit(EXIT_FAILURE); 
 	}
-
-	print_kide("%s unset\n", variable);
+	char message[1024];
+	sprintf(message, "%s unset\n", variable);
+	print_kide((const char *)message);
 }
