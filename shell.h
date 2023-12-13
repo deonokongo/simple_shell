@@ -16,8 +16,12 @@ struct FileInfo {
     int is_atty;
     int is_open_read;
 };
+typedef void (*builtin_func)(char **);
 
-typedef void (*builtin_func)(char **args);
+struct builtin {
+    const char *name;
+    builtin_func func;
+};
 
 void builtin_exit(char **args);
 void builtin_env(char **args);
