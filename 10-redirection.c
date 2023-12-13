@@ -56,26 +56,24 @@ void my_redirection(char *command, char *output_file, char *error_file)
 char *replace_variable(char *command, const char *variable, const char *value)
 {
 	char *pos = strstr(command, variable);
-	char *result = malloc(strlen(command) + strlen(value) - strlen(variable) + 1);
+	size_t result_len = strlen(command) - strlen(variable) + strlen(value) + 1;
+	char *result = malloc(result_len);
+
+	if (pos == NULL)
+	{
+		return (strdup(command));
+	}
 
 	if (result == NULL)
 	{
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
-	if (pos != NULL)
-	{
-		copy_string(result, command, pos - command);
-		result[pos - command] = '\0';
-		strcat(result, value);
-		strcat(result, pos + strlen(variable));
-	}
-	else
-	{
-		copy_string(result, command);
-	}
+	strncpy(result, command, pos - command);
+	result[pos - command] = '\0';
+	strcat(result, value);
+	strcat(result, pos + strlen(variable));
 
 	return (result);
 }
-
 
