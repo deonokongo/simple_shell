@@ -7,7 +7,7 @@
  */
 void print_aliases(void)
 {
-	for (KeyValuePair *pair = hash_table_begin(alias_table); pair; pair = hash_table_next(pair))
+	for (KeyValuePair * pair = hash_table_begin(alias_table); pair; pair = hash_table_next(pair))
 	{
 		print_kide(pair->value);
 	}

@@ -15,7 +15,6 @@ int main(void)
 
 	while (1)
 	{
-<<<<<<< HEAD
 		char line[BUFFER_SIZE];
 		char *args[MAX_ARGS];
 		int arg_count = 0;
@@ -23,14 +22,12 @@ int main(void)
 		size_t buffer = BUFFER_SIZE;
 		ssize_t bytesRead = my_getline(&line, &buffer);
 		printf("Read %lu bytes: %s\n", bytesRead, line);
-=======
+
 		char *prompt = "$ ";
 		input = readline(prompt);
->>>>>>> 84dc1c81244613b431fd44b495a853ff34521480
 
 		if (input == NULL)
 		{
-<<<<<<< HEAD
 			char *subcommand = strtok(command, "&|");
 			bool success = true;
 			while (subcommand != NULL)
@@ -40,7 +37,6 @@ int main(void)
 					subcommand = strtok(NULL, "&|");
 					continue;
 				}
-
 				if (is_builtin(subcommand))
 				{
 					while (token != NULL && arg_count < MAX_ARGS - 1)
@@ -61,26 +57,19 @@ int main(void)
 				{
 					break;
 				}
-=======
-			printf("\n");
-			free(input);
-			break;
-		}
->>>>>>> 84dc1c81244613b431fd44b495a853ff34521480
-
-		if (strlen(input) > 0)
-		{
-			if (execute_command(input) != 0)
-			{
-				printf("Command not found: %s\n", input);
+				printf("\n");
+				free(input);
+				break;
 			}
+			if (strlen(input) > 0)
+			{
+				if (execute_command(input) != 0)
+				{
+					printf("Command not found: %s\n", input);
+				}
+			}
+
+			free(input);
 		}
-
-		free(input);
+		return (0);
 	}
-<<<<<<< HEAD
-=======
-
-	return 0;
->>>>>>> 84dc1c81244613b431fd44b495a853ff34521480
-}
