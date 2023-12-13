@@ -1,10 +1,13 @@
 #include "shell.h"
+#include <stdbool.h>
+int my_fprintf(FILE *stream, const char *format, ...);
+char *my_strtok(char *str, char delimiter);
 /**
  * execute_command - executes a command using fork and execvp.
  * @args: array of command arguments.
  *Return: 0 or 1 on success
  */
-void execute_command(const char *args[])
+void execute_command(const char *command, const char *args[])
 {
 	pid_t child_p = fork();
 
@@ -18,7 +21,7 @@ void execute_command(const char *args[])
 	{
 		int status;
 
-		waitpid(child_pid, &status, 0);
+		waitpid(child_p, &status, 0);
 		char status_str[10];
 
 		snprintf(status_str, sizeof(status_str), "%d", WEXITSTATUS(status));
@@ -102,20 +105,28 @@ char *search_executable(const char *command, const char *path)
 			perror("malloc");
 			exit(EXIT_FAILURE);
 		}
-		my_fprintf(found_path, "%s/%s", token, command);
-
-		if (access(found_path, X_OK) == 0)
+		FILE *fp = fopen(found_path, "w");
+		if (!fp)
 		{
-			free(path_copy);
-			return (found_path);
+			perror("fopen");
+			free(found_path);
+			continue;
+			my_fprintf(fp, "%s/%s", token, command);
+			fclose(fp);
+
+			if (access(found_path, X_OK) == 0)
+			{
+				free(path_copy);
+				return (found_path);
+			}
+
+			free(found_path);
+			token = my_strtok(NULL, ':');
 		}
 
-		free(found_path);
-		token = my_strtok(NULL, ':');
+		free(path_copy);
+		return (NULL);
 	}
-
-	free(path_copy);
-	return (NULL);
 }
 /**
  * free_memory - Frees the allocated memory for command arguments

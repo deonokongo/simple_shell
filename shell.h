@@ -29,6 +29,10 @@ typedef struct KeyValuePair
     struct KeyValuePair *next;
 } KeyValuePair;
 
+void builtin_exit(char **args);
+void builtin_env(char **args);
+void builtin_setenv(char **args);
+void builtin_unsetenv(char **args);
 struct builtin builtins[] = {
   {"exit", builtin_exit},
     {"env", builtin_env},
@@ -52,9 +56,11 @@ FILE *file;
 
 void prompt(void);
 void print_kide(const char *message);
+int my_fprintf(FILE *stream, const char *format, ...);
 int my_getline(char **line, size_t *buffer);
-void free_memory(char **argv);
+void free_memory(char **argv, char *line, char *found_path);
 void remove_newline(char *str);
+void execute_command(const char *command, const char *args[]);
 void execute_process(const char *command, const char *path);
 void print_tokens(const char *command);
 void copy_string(char *dest, const char *src);
@@ -63,10 +69,6 @@ int is_atty(int fd);
 int is_open_read(int fd);
 int is_interactive_mode(void);
 char *search_executable(const char *command, const char *path);
-void builtin_exit(char **args);
-void builtin_env(char **args);
-void builtin_setenv(char **args);
-void builtin_unsetenv(char **args);
 unsigned int hash_function(const char *key);
 void hash_table_put(const char *key, const char *value);
 void my_redirection(char *command, char *output_file, char *error_file);

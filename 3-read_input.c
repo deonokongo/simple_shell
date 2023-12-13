@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <stdbool.h>
 /**
  * my_strtok - that splits a string into tokens
  *
