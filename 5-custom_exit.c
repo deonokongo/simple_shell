@@ -1,4 +1,9 @@
 #include "shell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+
 /**
  * custom_exit - Exits the program with a specified status
  * @status: The exit status code.

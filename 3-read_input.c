@@ -1,6 +1,10 @@
 #include "shell.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
-
+#include <unistd.h>
+#include <stddef.h>
+#include <string.h>
 /**
  * my_strtok - Splits a string into tokens based on a delimiter.
  * @str: The input string.

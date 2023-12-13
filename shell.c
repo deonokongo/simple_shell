@@ -1,11 +1,21 @@
 #include "shell.h"
-KeyValuePair *alias_table[HASH_TABLE_SIZE];
-
-void main(void)
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <readline/readline.h>
+/**
+ * main - Entry point for the simple shell program.
+ *
+ * Return: Always returns 0.
+ */
+int main(void)
 {
+	char *input;
+
+	initialize_table();
+
 	while (1)
 	{
+<<<<<<< HEAD
 		char line[BUFFER_SIZE];
 		char *args[MAX_ARGS];
 		int arg_count = 0;
@@ -13,10 +23,14 @@ void main(void)
 		size_t buffer = BUFFER_SIZE;
 		ssize_t bytesRead = my_getline(&line, &buffer);
 		printf("Read %lu bytes: %s\n", bytesRead, line);
+=======
+		char *prompt = "$ ";
+		input = readline(prompt);
+>>>>>>> 84dc1c81244613b431fd44b495a853ff34521480
 
-		char *command = my_strtok(line, ";");
-		while (command != NULL)
+		if (input == NULL)
 		{
+<<<<<<< HEAD
 			char *subcommand = strtok(command, "&|");
 			bool success = true;
 			while (subcommand != NULL)
@@ -47,15 +61,26 @@ void main(void)
 				{
 					break;
 				}
+=======
+			printf("\n");
+			free(input);
+			break;
+		}
+>>>>>>> 84dc1c81244613b431fd44b495a853ff34521480
 
-				subcommand = my_strtok(NULL, "&|");
+		if (strlen(input) > 0)
+		{
+			if (execute_command(input) != 0)
+			{
+				printf("Command not found: %s\n", input);
 			}
-
-			command = my_strtok(NULL, ";");
 		}
 
-		free(line);
+		free(input);
 	}
+<<<<<<< HEAD
+=======
+
+	return 0;
+>>>>>>> 84dc1c81244613b431fd44b495a853ff34521480
 }
-
-
