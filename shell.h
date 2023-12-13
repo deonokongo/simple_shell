@@ -53,8 +53,7 @@ struct builtin builtins[] = {
 KeyValuePair *hash_table[HASH_TABLE_SIZE];
 struct FileInfo _file_table[_NFILE];
 FILE *file;
-
-void prompt(void);
+char *prompt(void);
 void print_kide(const char *message);
 int my_fprintf(FILE *stream, const char *format, ...);
 int my_getline(char **line, size_t *buffer);
