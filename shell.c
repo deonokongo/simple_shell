@@ -21,7 +21,8 @@ void main(void)
 			bool success = true;
 			while (subcommand != NULL)
 			{
-				if (*subcommand == '#') {
+				if (*subcommand == '#')
+				{
 					subcommand = strtok(NULL, "&|");
 					continue;
 				}
