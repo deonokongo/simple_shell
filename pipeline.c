@@ -75,35 +75,35 @@ void run_single_command(char *command, int write_fd)
  */
 void run_pipeline(char *command)
 {
-    char *commands[MAX_COMMANDS];
-    int num_commands;
-    int *pipe_fds;
+	char *commands[MAX_COMMANDS];
+	int num_commands;
+	int *pipe_fds;
 
-    num_commands = split_pipeline(command, commands);
+	num_commands = split_pipeline(command, commands);
 
-    if (num_commands > 0)
-    {
-        pipe_fds = create_pipe();
-
-        run_single_command(commands[0], pipe_fds[1]);
-        close(pipe_fds[1]);
-
-        while (*command != '\0' && *command != '|')
+	if (num_commands > 0)
 	{
-            command++;
-        }
+		pipe_fds = create_pipe();
 
-        if (*command == '|')
+		run_single_command(commands[0], pipe_fds[1]);
+		close(pipe_fds[1]);
+
+		while (*command != '\0' && *command != '|')
+		{
+			command++;
+		}
+
+		if (*command == '|')
+		{
+			command++;
+		}
+
+		close(pipe_fds[0]);
+	}
+	else
 	{
-            command++;
-        }
-
-        close(pipe_fds[0]);
-    }
-    else
-    {
-        my_fprintf(stderr, "Error: No commands in the pipeline.\n");
-    }
+		my_fprintf(stderr, "Error: No commands in the pipeline.\n");
+	}
 }
 /**
  * split_pipeline - Split a command string into individual commands based on '|'.
@@ -114,15 +114,15 @@ void run_pipeline(char *command)
  */
 int split_pipeline(const char *command, char *commands[MAX_COMMANDS])
 {
-    int i = 0;
-    const char *delimiter = "|";
-    char *token = strtok((char *)command, delimiter);
+	int i = 0;
+	const char *delimiter = "|";
+	char *token = strtok((char *)command, delimiter);
 
-    while (token != NULL && i < MAX_COMMANDS)
-    {
-        commands[i++] = token;
-        token = strtok(NULL, delimiter);
-    }
+	while (token != NULL && i < MAX_COMMANDS)
+	{
+		commands[i++] = token;
+		token = strtok(NULL, delimiter);
+	}
 
-    return (i);
+	return (i);
 }
