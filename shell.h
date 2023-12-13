@@ -13,14 +13,15 @@
 #include "hash_table.h"
 
 struct FileInfo {
-    int is_atty;
-    int is_open_read;
+  int is_atty;
+  int is_open_read;
 };
+
 typedef void (*builtin_func)(char **);
 
 struct builtin {
-    const char *name;
-    builtin_func func;
+  const char *name;
+  builtin_func func;
 };
 
 void builtin_exit(char **args);
@@ -28,17 +29,12 @@ void builtin_env(char **args);
 void builtin_setenv(char **args);
 void builtin_unsetenv(char **args);
 
-struct builtin {
-    char *name;
-    builtin_func func;
-};
-
 struct builtin builtins[] = {
-    {"exit", builtin_exit},
-    {"env", builtin_env},
-    {"setenv", builtin_setenv},
-    {"unsetenv", builtin_unsetenv},
-    {NULL, NULL}
+  {"exit", builtin_exit},
+  {"env", builtin_env},
+  {"setenv", builtin_setenv},
+  {"unsetenv", builtin_unsetenv},
+  {NULL, NULL}
 };
 
 #define MAX_TOKENS 256
