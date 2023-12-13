@@ -70,30 +70,59 @@ void run_single_command(char *command, int write_fd)
 }
 /**
  * run_pipeline - Runs a pipeline of shell commands.
- * @command: The command string containing the pipeline
+ * @command: The command string containing the pipeline.
  * Return: void
  */
 void run_pipeline(char *command)
 {
-        char *commands[MAX_COMMANDS];
-        int num_commands;
+	char *commands[MAX_COMMANDS];
+	int num_commands;
+	int *pipe_fds;
 
-        num_commands = split_pipeline(command, commands);
+	num_commands = split_pipeline(command, commands);
 
-        int *pipe_fds = create_pipe();
+	if (num_commands > 0)
+	{
+		pipe_fds = create_pipe();
 
-        run_single_command(command, pipe_fds[1]);
-        close(pipe_fds[1]);
+		run_single_command(commands[0], pipe_fds[1]);
+		close(pipe_fds[1]);
 
-        while (*command != '\0' && *command != '|')
-        {
-                command++;
-        }
+		while (*command != '\0' && *command != '|')
+		{
+			command++;
+		}
 
-        if (*command == '|')
-        {
-                command++;
-        }
+		if (*command == '|')
+		{
+			command++;
+		}
 
-        close(pipe_fds[0]);
+		close(pipe_fds[0]);
+	}
+	else
+	{
+		my_fprintf(stderr, "Error: No commands in the pipeline.\n");
+	}
+}
+/**
+ * split_pipeline - Split a command string into individual commands based on '|'.
+ * @command: The command string to split.
+ * @commands: An array to store the split commands.
+ *
+ * Return: The number of split commands.
+ */
+int split_pipeline(const char *command, char *commands[MAX_COMMANDS])
+{
+	int i = 0;
+	const char *delimiter = "|";
+	char *token = strtok((char *)command, delimiter);
+
+	while (token != NULL && i < MAX_COMMANDS)
+	{
+		commands[i++] = token;
+		token = strtok(NULL, delimiter);
+	}
+
+	return (i);
 }
