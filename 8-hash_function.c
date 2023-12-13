@@ -18,7 +18,8 @@ void initialize_table()
         fprintf(stderr, "Failed to initialize hash table.\n");
         exit(EXIT_FAILURE);
     }
-    for (unsigned int i = 0; i < table_size; ++i) {
+    for (unsigned int i = 0; i < table_size; ++i)
+    {
         table[i] = NULL;
     }
 }
@@ -81,7 +82,6 @@ void hash_table_put(const char *key, const char *value)
         }
         current->next = new_pair;
     }
-
     num_elements++;
 }
 
@@ -108,7 +108,6 @@ const char *hash_table_get(const char *key)
             current = current->next;
         }
     }
-
     return (NULL);
 }
 
@@ -135,7 +134,6 @@ int hash_table_contains(const char *key)
             current = current->next;
         }
     }
-
     return (0);
 }
 

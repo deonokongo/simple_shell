@@ -53,7 +53,7 @@ FILE *file;
 
 char *prompt(void);
 void print_kide(const char *message);
-char *my_strtok(char *str, char delimiter);
+char *my_strtok(char *str, char *delimiter);
 int my_fprintf(FILE *stream, const char *format, ...);
 int my_getline(char **line, size_t *buffer);
 void free_memory(char **argv, char *line, char *found_path);

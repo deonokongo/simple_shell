@@ -12,6 +12,7 @@ void main(void)
 		char *token = strtok(subcommand, " ");
 		size_t buffer = BUFFER_SIZE;
 		ssize_t bytesRead = my_getline(&line, &buffer);
+		printf("Read %lu bytes: %s\n", bytesRead, line);
 
 		char *command = my_strtok(line, ";");
 		while (command != NULL)
@@ -54,8 +55,6 @@ void main(void)
 
 		free(line);
 	}
-
-	return (0);
 }
 
 
