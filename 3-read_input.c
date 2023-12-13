@@ -1,14 +1,16 @@
 #include "shell.h"
 #include <stdbool.h>
+
 /**
  * my_strtok - Splits a string into tokens based on a delimiter.
  * @str: The input string.
  * @delimiter: The delimiter used for tokenization.
- * Return: A pointer to the next token, or NULL if no more tokens are available.
+ * Return: A pointer to the next token
  */
 char *my_strtok(char *str, char delimiter)
 {
 	static char *current;
+	char *start = current;
 
 	if (str != NULL)
 	{
@@ -19,9 +21,6 @@ char *my_strtok(char *str, char delimiter)
 	{
 		return (NULL);
 	}
-
-	char *start = current;
-
 	while (*current != '\0' && *current != delimiter)
 	{
 		current++;
@@ -44,6 +43,7 @@ char *my_strtok(char *str, char delimiter)
  */
 int my_getline(char **line, size_t *buffer)
 {
+	int i;
 	bool in_comment = false;
 
 	ssize_t bytesRead = getline(line, buffer, stdin);
@@ -60,8 +60,7 @@ int my_getline(char **line, size_t *buffer)
 			exit(EXIT_FAILURE);
 		}
 	}
-
-	for (int i = 0; i < bytesRead; ++i)
+	for (i = 0; i < bytesRead; ++i)
 	{
 		if (in_comment && (*line)[i] == '\n')
 		{

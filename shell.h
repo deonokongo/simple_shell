@@ -59,7 +59,7 @@ int my_fprintf(FILE *stream, const char *format, ...);
 int my_getline(char **line, size_t *buffer);
 void free_memory(char **argv, char *line, char *found_path);
 void remove_newline(char *str);
-void execute_command(const char *command, const char *args[]);
+void execute_command(const char *command);
 void execute_process(const char *command, const char *path);
 void print_tokens(const char *command);
 void copy_string(char *dest, const char *src);

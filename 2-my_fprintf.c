@@ -2,20 +2,21 @@
 #include <stdarg.h>
 #include <stdio.h>
 /**
- * my_fprintf - prints  output to a file stream
+ * my_fprintf - prints output to a file stream
  * @stream: file stream
  * @format: format of the output
- * Return: void
+ * Return: number of characters written
  */
 int my_fprintf(FILE *stream, const char *format, ...)
 {
+	const char *p;
 	va_list args;
-
-	va_start(args, format);
 
 	int chars_written = 0;
 
-	for (const char *p = format; *p != '\0'; ++p)
+	va_start(args, format);
+
+	for (p = format; *p != '\0'; ++p)
 	{
 		if (*p == '%')
 		{
@@ -49,5 +50,4 @@ int my_fprintf(FILE *stream, const char *format, ...)
 	va_end(args);
 	return (chars_written);
 }
-
 
