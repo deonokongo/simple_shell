@@ -1,15 +1,13 @@
 #include "hash_table.h"
 #include "shell.h"
 
-
 /**
  * print_aliases - Print all aliases in the alias table
  * Return: void
  */
 void print_aliases(void)
 {
-	for (KeyValuePair * pair = hash_table_begin(alias_table); pair;
-			pair = hash_table_next(alias_table))
+	for (KeyValuePair *pair = hash_table_begin(alias_table); pair; pair = hash_table_next(pair))
 	{
 		print_kide(pair->value);
 	}
@@ -44,7 +42,7 @@ void update_alias_table(const char *definition)
 			free(hash_table_get(alias_table, name));
 		}
 
-		value = strdup(definition);
+		value = strdup(value);
 		hash_table_put(alias_table, name, value);
 		free(value);
 	}
@@ -71,7 +69,8 @@ void handle_alias_command(char *argv[])
 		{
 			char *alias_name = argv[i];
 
-			update_alias_table(argv[i]);
+			update_alias_table(alias_name);
 		}
 	}
 }
+

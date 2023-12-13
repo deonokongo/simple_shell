@@ -1,5 +1,6 @@
 #ifndef SHELL_H
 #define SHELL_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -9,32 +10,27 @@
 #include <stdarg.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "hash_table.h"
 
-struct FileInfo
-{
+struct FileInfo {
     int is_atty;
     int is_open_read;
 };
-typedef void (*builtin_func)(char **args);
 
-struct builtin
-{
-    char *name;
-    builtin_func func;
-};
-typedef struct KeyValuePair
-{
-    char *key;
-    char *value;
-    struct KeyValuePair *next;
-} KeyValuePair;
+typedef void (*builtin_func)(char **args);
 
 void builtin_exit(char **args);
 void builtin_env(char **args);
 void builtin_setenv(char **args);
 void builtin_unsetenv(char **args);
+
+struct builtin {
+    char *name;
+    builtin_func func;
+};
+
 struct builtin builtins[] = {
-  {"exit", builtin_exit},
+    {"exit", builtin_exit},
     {"env", builtin_env},
     {"setenv", builtin_setenv},
     {"unsetenv", builtin_unsetenv},
@@ -46,15 +42,17 @@ struct builtin builtins[] = {
 #define BUFFER_SIZE 1024
 #define MAX_ARGS 64
 #define MAX_LINE_LENGTH 1024
-
-
 #define HASH_TABLE_SIZE 100
 
-KeyValuePair *hash_table[HASH_TABLE_SIZE];
+KeyValuePair *alias_table[HASH_TABLE_SIZE];
+
 struct FileInfo _file_table[_NFILE];
 FILE *file;
+
+
 char *prompt(void);
 void print_kide(const char *message);
+char *my_strtok(char *str, char delimiter);
 int my_fprintf(FILE *stream, const char *format, ...);
 int my_getline(char **line, size_t *buffer);
 void free_memory(char **argv, char *line, char *found_path);
@@ -62,7 +60,7 @@ void remove_newline(char *str);
 void execute_command(const char *command);
 void execute_process(const char *command, const char *path);
 void print_tokens(const char *command);
-void copy_string(char *dest, const char *src);
+void copy_string(char *dest, const char *src, size_t max_len);
 void custom_exit(int status);
 int is_atty(int fd);
 int is_open_read(int fd);
@@ -86,3 +84,4 @@ void update_alias_table(const char *definition);
 void handle_alias_command(char *argv[]);
 
 #endif
+

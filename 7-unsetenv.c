@@ -7,6 +7,8 @@
  */
 void builtin_unsetenv(char **args)
 {
+	char message[1024];
+
 	char *variable = args[1];
 
 	if (args[1] == NULL)
@@ -19,8 +21,6 @@ void builtin_unsetenv(char **args)
 		my_fprintf(stderr, "unsetenv: unable to unset variable '%s'\n", variable);
 		exit(EXIT_FAILURE);
 	}
-	char message[1024];
-
 	sprintf(message, "%s unset\n", variable);
 	print_kide((const char *)message);
 }
