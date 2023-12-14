@@ -95,11 +95,9 @@ typedef struct passinfo
 	int readfd;
 	int histcount;
 } info_t;
-
 #define INFO_INIT \
-{NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
-	0, 0, 0}
-
+{NULL, NULL, NULL, 0, 0, 0, 0, NULL, 0, NULL, NULL, NULL, 0, NULL, \
+        0, 0, 0, 0}
 /**
  *struct builtin - contains a builtin string and related function
  *@type: the builtin command flag
@@ -142,7 +140,7 @@ int _putchar(char);
 
 /* toem_exits.c */
 char *_strncpy(char *, char *, int);
-char *_strncat(char *, const char *, int);
+char *_strncat(char *, char *, int);
 char *_strchr(char *, char);
 
 /* toem_tokenizer.c */
@@ -189,8 +187,8 @@ char **get_environ(info_t *);
 int _myunsetenv(info_t *, char *);
 int _mysetenv(info_t *, char *, char *);
 char **get_environ(info_t *);
-int _unsetenv(info_t *);
-int _setenv(info_t *info);
+int _unsetenv(info_t *, char *);
+int _setenv(info_t *info, char *);
 
 
 char *get_history_file(info_t *info);

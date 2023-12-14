@@ -10,7 +10,11 @@
 int main(int ac, char **av)
 {
 	info_t info[] = {INFO_INIT};
-	int fd = 2;
+
+	int fd = STDOUT_FILENO;
+
+	const int EXIT_OPEN_ERROR = 1;
+	const int EXIT_NOENT = 127;
 
 	asm("mov %1, %0\n\t"
 			"add $3, %0"
@@ -23,7 +27,7 @@ int main(int ac, char **av)
 		if (fd == -1)
 		{
 			if (errno == EACCES)
-				exit(126);
+				exit(EXIT_OPEN_ERROR);
 			if (errno == ENOENT)
 			{
 				print_input(av[0]);
@@ -31,8 +35,9 @@ int main(int ac, char **av)
 				print_input(av[1]);
 				_eputchar('\n');
 				_eputchar(BUFFER_FLUSH);
-				exit(127);
+				exit(EXIT_NOENT);
 			}
+			perror("open");
 			return (EXIT_FAILURE);
 		}
 		info->readfd = fd;
