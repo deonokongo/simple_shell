@@ -19,7 +19,7 @@ list_t *add_node(list_t **head, const char *str, int node_num)
 	if (!new_head)
 		return (NULL);
 
-	_memset((void *)new_head, 0, sizeof(list_t));
+	my_memset((void *)new_head, 0, sizeof(list_t));
 	new_head->num = node_num;
 
 	if (str)
@@ -57,7 +57,7 @@ list_t *add_node_end(list_t **head, const char *str, int node_num)
 	if (!new_node)
 		return (NULL);
 
-	_memset((void *)new_node, 0, sizeof(list_t));
+	my_memset((void *)new_node, 0, sizeof(list_t));
 	new_node->num = node_num;
 
 	if (str)

@@ -13,7 +13,7 @@ char *my_memset(char *ptr, char byte, unsigned int count)
 
 	for (i = 0; i < count; i++)
 		ptr[i] = byte;
-	return ptr;
+	return (ptr);
 }
 
 /**
@@ -47,16 +47,16 @@ void *my_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 	if (!new_size)
 		return (free(ptr), NULL);
 	if (new_size == old_size)
-		return ptr;
+		return (ptr);
 
 	p = malloc(new_size);
 	if (!p)
-		return NULL;
+		return (NULL);
 
 	old_size = old_size < new_size ? old_size : new_size;
 	while (old_size--)
 		p[old_size] = ((char *)ptr)[old_size];
 	free(ptr);
-	return p;
+	return (p);
 }
 

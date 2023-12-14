@@ -29,7 +29,7 @@ char *_strncpy(char *destination, char *source, int max_characters)
 			destination_index++;
 		}
 	}
-	return result;
+	return (result);
 }
 
 /**
@@ -60,7 +60,7 @@ char *_strncat(char *destination, char *source, int max_characters)
 	if (source_index < max_characters)
 		destination[destination_index] = '\0';
 
-	return result;
+	return (result);
 }
 
 /**
@@ -72,12 +72,11 @@ char *_strncat(char *destination, char *source, int max_characters)
  */
 char *_strchr(char *string, char character)
 {
-	do
-	{
+	do {
 		if (*string == character)
-			return string;
+			return (string);
 	} while (*string++ != '\0');
 
-	return NULL;
+	return (NULL);
 }
 

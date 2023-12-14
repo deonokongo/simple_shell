@@ -16,24 +16,24 @@ int is_chain(info_t *info, char *buf, size_t *position)
 	{
 		buf[current_position] = '\0';
 		current_position++;
-		info->cmd_buf_type = CMD_OR;
+		info->cmd_buffer_type = CMD_OR;
 	}
 	else if (buf[current_position] == '&' && buf[current_position + 1] == '&')
 	{
 		buf[current_position] = '\0';
 		current_position++;
-		info->cmd_buf_type = CMD_AND;
+		info->cmd_buffer_type = CMD_AND;
 	}
 	else if (buf[current_position] == ';')
 	{
-		buf[current_position] = '\0'; 
-		info->cmd_buf_type = CMD_CHAIN;
+		buf[current_position] = '\0';
+		info->cmd_buffer_type = CMD_CHAIN;
 	}
 	else
-		return 0;
+		return (0);
 
 	*position = current_position;
-	return 1;
+	return (1);
 }
 
 /**
@@ -46,11 +46,12 @@ int is_chain(info_t *info, char *buf, size_t *position)
  *
  * Return: Void
  */
-void check_chain(info_t *info, char *buf, size_t *position, size_t start_position, size_t length)
+void check_chain(info_t *info, char *buf, size_t *position,
+		size_t start_position, size_t length)
 {
 	size_t current_position = *position;
 
-	if (info->cmd_buf_type == CMD_AND)
+	if (info->cmd_buffer_type == CMD_AND)
 	{
 		if (info->status)
 		{
@@ -58,7 +59,7 @@ void check_chain(info_t *info, char *buf, size_t *position, size_t start_positio
 			current_position = length;
 		}
 	}
-	if (info->cmd_buf_type == CMD_OR)
+	if (info->cmd_buffer_type == CMD_OR)
 	{
 		if (!info->status)
 		{
@@ -86,22 +87,22 @@ int replace_alias(info_t *info)
 	{
 		alias_node = node_starts_with(info->alias, info->argv[0], '=');
 		if (!alias_node)
-			return 0;
+			return (0);
 
 		free(info->argv[0]);
 
 		alias_value = _strchr(alias_node->str, '=');
 		if (!alias_value)
-			return 0;
+			return (0);
 
 		alias_value = _strdup(alias_value + 1);
 		if (!alias_value)
-			return 0;
+			return (0);
 
 		info->argv[0] = alias_value;
 	}
 
-	return 1;
+	return (1);
 }
 
 /**
@@ -122,7 +123,8 @@ int replace_variables(info_t *info)
 
 		if (!_strcmp(info->argv[i], "$?"))
 		{
-			replace_string(&(info->argv[i]), _strdup(convert_number(info->status, 10, 0)));
+			replace_string(&(info->argv[i]),
+					_strdup(convert_number(info->status, 10, 0)));
 			continue;
 		}
 		if (!_strcmp(info->argv[i], "$$"))
@@ -141,7 +143,7 @@ int replace_variables(info_t *info)
 		replace_string(&info->argv[i], _strdup(""));
 	}
 
-	return 0;
+	return (0);
 }
 
 /**
@@ -155,6 +157,6 @@ int replace_string(char **old_str, char *new_str)
 {
 	free(*old_str);
 	*old_str = new_str;
-	return 1;
+	return (1);
 }
-i
+

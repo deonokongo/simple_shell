@@ -20,8 +20,8 @@ void print_input(char *input_str)
 }
 
 /**
- * _eputchar - writes the character c to stderr
- * @c: The character to print
+ * _eputchar - writes the character to stderr
+ * @character: The character to print
  *
  * Return: On success 1.
  * On error, -1 is returned, and errno is set appropriately.
@@ -29,21 +29,21 @@ void print_input(char *input_str)
 int _eputchar(char character)
 {
 	static int index;
-	static char buffer[WRITE_BUF_SIZE];
+	static char buffer[WRITE_BUFFER_SIZE];
 
-	if (character == BUF_FLUSH || index >= WRITE_BUF_SIZE)
+	if (character == BUFFER_FLUSH || index >= WRITE_BUFFER_SIZE)
 	{
 		write(2, buffer, index);
 		index = 0;
 	}
-	if (character != BUF_FLUSH)
+	if (character != BUFFER_FLUSH)
 		buffer[index++] = character;
 	return (1);
 }
 
 /**
  * _writefd - writes the character c to the given file descriptor
- * @c: The character to print
+ * @character: The character to print
  * @fd: The file descriptor to write to
  *
  * Return: On success 1.
@@ -52,14 +52,14 @@ int _eputchar(char character)
 int _writefd(char character, int fd)
 {
 	static int index;
-	static char buffer[WRITE_BUF_SIZE];
+	static char buffer[WRITE_BUFFER_SIZE];
 
-	if (character == BUF_FLUSH || index >= WRITE_BUF_SIZE)
+	if (character == BUFFER_FLUSH || index >= WRITE_BUFFER_SIZE)
 	{
 		write(fd, buffer, index);
 		index = 0;
 	}
-	if (character != BUF_FLUSH)
+	if (character != BUFFER_FLUSH)
 		buffer[index++] = character;
 	return (1);
 }
@@ -79,7 +79,7 @@ int _putsfd(char *str, int fd)
 		return (0);
 	while (*str)
 	{
-		count += _putfd(*str++, fd);
+		count += _putsfd(str++, fd);
 	}
 	return (count);
 }

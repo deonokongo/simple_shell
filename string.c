@@ -8,13 +8,14 @@
  */
 int _strlen(const char *str)
 {
+	int length = 0;
+
 	if (!str)
 		return (0);
 
-	int length = 0;
 	while (*str++)
 		length++;
-	return length;
+	return (length);
 }
 
 /**
@@ -48,9 +49,9 @@ char *starts_with(const char *haystack, const char *needle)
 	while (*needle)
 	{
 		if (*needle++ != *haystack++)
-			return NULL;
+			return (NULL);
 	}
-	return (char *)haystack;
+	return ((char *)haystack);
 }
 
 /**
@@ -69,6 +70,6 @@ char *_strcat(char *dest, const char *src)
 	while (*src)
 		*dest++ = *src++;
 	*dest = '\0';
-	return ret;
+	return (ret);
 }
 

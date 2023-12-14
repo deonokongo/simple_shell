@@ -9,25 +9,25 @@
  */
 int _erratoi(char *str)
 {
-    int i = 0;
-    unsigned long int result = 0;
+	int i = 0;
+	unsigned long int result = 0;
 
-    if (*str == '+')
-        str++; /* TODO: why does this make main return 255? */
+	if (*str == '+')
+		str++; /* TODO: why does this make main return 255? */
 
-    for (i = 0;  str[i] != '\0'; i++)
-    {
-        if (str[i] >= '0' && str[i] <= '9')
-        {
-            result *= 10;
-            result += (str[i] - '0');
-            if (result > INT_MAX)
-                return (-1);
-        }
-        else
-            return (-1);
-    }
-    return (result);
+	for (i = 0;  str[i] != '\0'; i++)
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+		{
+			result *= 10;
+			result += (str[i] - '0');
+			if (result > INT_MAX)
+				return (-1);
+		}
+		else
+			return (-1);
+	}
+	return (result);
 }
 
 /**
@@ -39,13 +39,13 @@ int _erratoi(char *str)
  */
 void print_error(info_t *info, char *error_type)
 {
-    print_input(info->fname);
-    print_input(": ");
-    print_decimal(info->line_count, STDERR_FILENO);
-    print_input(": ");
-    print_input(info->argv[0]);
-    print_input(": ");
-    print_input(error_type);
+	print_input(info->fname);
+	print_input(": ");
+	print_decimal(info->line_count, STDERR_FILENO);
+	print_input(": ");
+	print_input(info->argv[0]);
+	print_input(": ");
+	print_input(error_type);
 }
 
 /**
@@ -57,38 +57,38 @@ void print_error(info_t *info, char *error_type)
  */
 int print_decimal(int input, int fd)
 {
-    int (*output_char)(char) = _putchar;
-    int i, count = 0;
-    unsigned int absolute_value, current;
+	int (*output_char)(char) = _putchar;
+	int i, count = 0;
+	unsigned int absolute_value, current;
 
-    if (fd == STDERR_FILENO)
-        output_char = _eputchar;
+	if (fd == STDERR_FILENO)
+		output_char = _eputchar;
 
-    if (input < 0)
-    {
-        absolute_value = -input;
-        output_char('-');
-        count++;
-    }
-    else
-        absolute_value = input;
+	if (input < 0)
+	{
+		absolute_value = -input;
+		output_char('-');
+		count++;
+	}
+	else
+		absolute_value = input;
 
-    current = absolute_value;
+	current = absolute_value;
 
-    for (i = 1000000000; i > 1; i /= 10)
-    {
-        if (absolute_value / i)
-        {
-            output_char('0' + current / i);
-            count++;
-        }
-        current %= i;
-    }
+	for (i = 1000000000; i > 1; i /= 10)
+	{
+		if (absolute_value / i)
+		{
+			output_char('0' + current / i);
+			count++;
+		}
+		current %= i;
+	}
 
-    output_char('0' + current);
-    count++;
+	output_char('0' + current);
+	count++;
 
-    return (count);
+	return (count);
 }
 
 /**
@@ -101,32 +101,32 @@ int print_decimal(int input, int fd)
  */
 char *convert_number(long int num, int base, int flags)
 {
-    static char *character_array;
-    static char buffer[50];
-    char sign = 0;
-    char *ptr;
-    unsigned long n = num;
+	static char *character_array;
+	static char buffer[50];
+	char sign = 0;
+	char *ptr;
+	unsigned long n = num;
 
-    if (!(flags & CONVERT_UNSIGNED) && num < 0)
-    {
-        n = -num;
-        sign = '-';
-    }
+	if (!(flags & CONVERT_UNSIGNED) && num < 0)
+	{
+		n = -num;
+		sign = '-';
+	}
 
-    character_array = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
-    ptr = &buffer[49];
-    *ptr = '\0';
+	character_array = flags & CONVERT_LOWERCASE ?
+		"0123456789abcdef" : "0123456789ABCDEF";
+	ptr = &buffer[49];
+	*ptr = '\0';
 
-    do
-    {
-        *--ptr = character_array[n % base];
-        n /= base;
-    } while (n != 0);
+	do {
+		*--ptr = character_array[n % base];
+		n /= base;
+	} while (n != 0);
 
-    if (sign)
-        *--ptr = sign;
+	if (sign)
+		*--ptr = sign;
 
-    return (ptr);
+	return (ptr);
 }
 
 /**
@@ -137,13 +137,13 @@ char *convert_number(long int num, int base, int flags)
  */
 void remove_comment(char *buffer)
 {
-    int i;
+	int i;
 
-    for (i = 0; buffer[i] != '\0'; i++)
-        if (buffer[i] == '#' && (!i || buffer[i - 1] == ' '))
-        {
-            buffer[i] = '\0';
-            break;
-        }
+	for (i = 0; buffer[i] != '\0'; i++)
+		if (buffer[i] == '#' && (!i || buffer[i - 1] == ' '))
+		{
+			buffer[i] = '\0';
+			break;
+		}
 }
 

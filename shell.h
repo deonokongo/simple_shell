@@ -13,9 +13,9 @@
 #include <errno.h>
 
 /* for read/write buffers */
-#define READ_BUF_SIZE 1024
-#define WRITE_BUF_SIZE 1024
-#define BUF_FLUSH -1
+#define READ_BUFFER_SIZE 1024
+#define WRITE_BUFFER_SIZE 1024
+#define BUFFER_FLUSH -1
 
 /* for command chaining */
 #define CMD_NORM	0
@@ -83,14 +83,15 @@ typedef struct passinfo
 	int linecount_flag;
 	char *fname;
 	list_t *env;
+	int error_code;
 	list_t *history;
 	list_t *alias;
 	char **environ;
 	int env_changed;
 	int status;
 
-	char **cmd_buf; /* pointer to cmd ; chain buffer, for memory mangement */
-	int cmd_buf_type; /* CMD_type ||, &&, ; */
+	char **cmd_buffer; /* pointer to cmd ; chain buffer, for memory mangement */
+	int cmd_buffer_type; /* CMD_type ||, &&, ; */
 	int readfd;
 	int histcount;
 } info_t;
@@ -110,8 +111,6 @@ typedef struct builtin
 	int (*func)(info_t *);
 } builtin_table;
 
-
-/* toem_shloop.c */
 int hsh(info_t *, char **);
 int find_builtin(info_t *);
 void find_cmd(info_t *);
@@ -130,10 +129,10 @@ int _writefd(char c, int fd);
 int _putsfd(char *str, int fd);
 
 /* toem_string.c */
-int _strlen(char *);
-int _strcmp(char *, char *);
+int _strlen(const char *);
+int _strcmp(const char *, const char *);
 char *starts_with(const char *, const char *);
-char *_strcat(char *, char *);
+char *_strcat(char *, const char *);
 
 
 char *_strcpy(char *, char *);
@@ -143,7 +142,7 @@ int _putchar(char);
 
 /* toem_exits.c */
 char *_strncpy(char *, char *, int);
-char *_strncat(char *, char *, int);
+char *_strncat(char *, const char *, int);
 char *_strchr(char *, char);
 
 /* toem_tokenizer.c */
@@ -184,13 +183,15 @@ void free_info(info_t *, int);
 
 char *_getenv(info_t *, const char *);
 int my_env(info_t *);
-int _setenv(info_t *);
-int _unsetenv(info_t *);
 int populate_env_list(info_t *);
 
 char **get_environ(info_t *);
-int _unsetenv(info_t *, char *);
-int _setenv(info_t *, char *, char *);
+int _myunsetenv(info_t *, char *);
+int _mysetenv(info_t *, char *, char *);
+char **get_environ(info_t *);
+int _unsetenv(info_t *);
+int _setenv(info_t *info);
+
 
 char *get_history_file(info_t *info);
 int write_history(info_t *info);

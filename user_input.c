@@ -31,7 +31,7 @@ ssize_t input_buffer(info_t *info, char **buffer, size_t *buffer_length)
 				bytes_read--;
 			}
 			info->linecount_flag = 1;
-			remove_comments(*buffer);
+			remove_comment(*buffer);
 			build_history_list(info, *buffer, info->histcount++);
 			{
 				*buffer_length = bytes_read;
@@ -39,7 +39,7 @@ ssize_t input_buffer(info_t *info, char **buffer, size_t *buffer_length)
 			}
 		}
 	}
-	return bytes_read;
+	return (bytes_read);
 }
 
 /**
@@ -55,10 +55,10 @@ ssize_t get_input(info_t *info)
 	ssize_t bytes_read = 0;
 	char **buffer_ptr = &(info->arg), *current_position;
 
-	_putchar(BUF_FLUSH);
+	_putchar(BUFFER_FLUSH);
 	bytes_read = input_buffer(info, &buffer, &buffer_length);
 	if (bytes_read == -1)
-		return -1;
+		return (-1);
 	if (buffer_length)
 	{
 		buffer_end = buffer_start;
@@ -80,11 +80,11 @@ ssize_t get_input(info_t *info)
 		}
 
 		*buffer_ptr = current_position;
-		return _strlen(current_position);
+		return (_strlen(current_position));
 	}
 
 	*buffer_ptr = buffer;
-	return bytes_read;
+	return (bytes_read);
 }
 
 /**
@@ -100,11 +100,11 @@ ssize_t read_buffer(info_t *info, char *buffer, size_t *buffer_length)
 	ssize_t bytes_read = 0;
 
 	if (*buffer_length)
-		return 0;
+		return (0);
 	bytes_read = read(info->readfd, buffer, READ_BUFFER_SIZE);
 	if (bytes_read >= 0)
 		*buffer_length = bytes_read;
-	return bytes_read;
+	return (bytes_read);
 }
 
 /**
@@ -131,11 +131,11 @@ int _getline(info_t *info, char **ptr, size_t *length)
 
 	bytes_read = read_buffer(info, buffer, &buffer_length);
 	if (bytes_read == -1 || (bytes_read == 0 && buffer_length == 0))
-		return -1;
+		return (-1);
 
 	c = _strchr(buffer + buffer_start, '\n');
 	k = c ? 1 + (unsigned int)(c - buffer) : buffer_length;
-	new_position = _realloc(current_position, size, size ? size + k : k + 1);
+	new_position = my_realloc(current_position, size, size ? size + k : k + 1);
 	if (!new_position)
 		return (current_position ? free(current_position), -1 : -1);
 
@@ -151,7 +151,7 @@ int _getline(info_t *info, char **ptr, size_t *length)
 	if (length)
 		*length = size;
 	*ptr = current_position;
-	return size;
+	return (size);
 }
 
 /**
@@ -164,6 +164,6 @@ void sigintHandler(__attribute__((unused))int sig_num)
 {
 	_puts("\n");
 	_puts("$ ");
-	_putchar(BUF_FLUSH);
+	_putchar(BUFFER_FLUSH);
 }
 
