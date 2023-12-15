@@ -115,9 +115,9 @@ int find_builtin(info_t *);
 void find_cmd(info_t *);
 void fork_cmd(info_t *);
 
-int is_executable_command(info_t *, char *);
-char *duplicate_characters(char *, int, int);
-char *find_path_in_command(info_t *, char *, char *);
+int is_cmd(info_t *, char *);
+char *duplicate_chars(char *, int, int);
+char *find_path(info_t *, char *, char *);
 
 /* loophsh.c */
 int loophsh(char **);
@@ -165,7 +165,7 @@ int print_decimal(int, int);
 char *convert_number(long int, int, int);
 void remove_comment(char *);
 
-int _myexit(info_t *);
+int my_exit(info_t *);
 int my_cd(info_t *);
 int my_help(info_t *);
 
@@ -182,7 +182,7 @@ void free_info(info_t *, int);
 
 /* toem_environ.c */
 char *_getenv(info_t *, const char *);
-int _myenv(info_t *);
+int my_env(info_t *);
 int _mysetenv(info_t *);
 int _myunsetenv(info_t *);
 int populate_env_list(info_t *);

@@ -1,4 +1,6 @@
 #include "shell.h"
+int replace_vars(info_t *info);
+int replace_alias(info_t *info);
 
 /**
  * clear_info - initializes info_t struct
