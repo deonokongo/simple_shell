@@ -90,7 +90,6 @@ int populate_env_list(info_t *info)
 	for (i = 0; environ[i]; i++)
 	{
 		char *env_var = malloc(strlen(environ[i]) + 1);
-		
 		if (env_var)
 		{
 			strcpy(env_var, environ[i]);
