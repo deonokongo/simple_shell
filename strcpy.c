@@ -79,4 +79,3 @@ char *_strchr(char *string, char character)
 
 	return (NULL);
 }
-
