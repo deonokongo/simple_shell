@@ -1,4 +1,6 @@
 #include "shell.h"
+int _setenv(info_t *info);
+int _unsetenv(info_t *info);
 char *find_path(info_t *info, char *path, char *command);
 int is_cmd(info_t *info, char *cmd);
 /**
@@ -61,6 +63,8 @@ int find_builtin(info_t *info)
 		{"env", my_env},
 		{"help", my_help},
 		{"history", my_history},
+		{"setenv", _setenv},
+		{"unsetenv", _unsetenv},
 		{"cd", my_cd},
 		{"alias", my_alias},
 		{NULL, NULL}

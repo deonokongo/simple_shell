@@ -27,7 +27,7 @@ int main(int ac, char **av)
 		if (fd == -1)
 		{
 			if (errno == EACCES)
-				exit(EXIT_OPEN_ERROR);
+				exit(126);
 			if (errno == ENOENT)
 			{
 				print_input(av[0]);
@@ -38,6 +38,8 @@ int main(int ac, char **av)
 				exit(EXIT_NOENT);
 			}
 			perror("open");
+				exit(127);
+			}
 			return (EXIT_FAILURE);
 		}
 		info->readfd = fd;

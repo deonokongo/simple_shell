@@ -96,8 +96,9 @@ typedef struct passinfo
 	int histcount;
 } info_t;
 #define INFO_INIT \
-{NULL, NULL, NULL, 0, 0, 0, 0, NULL, 0, NULL, NULL, NULL, 0, NULL, \
-        0, 0, 0, 0}
+{NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
+	0, 0, 0}
+
 /**
  *struct builtin - contains a builtin string and related function
  *@type: the builtin command flag
@@ -179,17 +180,17 @@ void clear_info(info_t *);
 void set_info(info_t *, char **);
 void free_info(info_t *, int);
 
+/* toem_environ.c */
 char *_getenv(info_t *, const char *);
-int my_env(info_t *);
+int _myenv(info_t *);
+int _mysetenv(info_t *);
+int _myunsetenv(info_t *);
 int populate_env_list(info_t *);
 
-char **get_environ(info_t *);
-int _myunsetenv(info_t *, char *);
-int _mysetenv(info_t *, char *, char *);
+/* toem_getenv.c */
 char **get_environ(info_t *);
 int _unsetenv(info_t *, char *);
-int _setenv(info_t *info, char *);
-
+int _setenv(info_t *, char *, char *);
 
 char *get_history_file(info_t *info);
 int write_history(info_t *info);
