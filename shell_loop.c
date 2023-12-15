@@ -1,10 +1,5 @@
 #include "shell.h"
-int my_exit(info_t *info);
-int my_env(info_t *info);
-int _mysetenv(info_t *info);
-int _myunsetenv(info_t *info);
-char *find_path(info_t *info, char *path, char *command);
-int is_cmd(info_t *info, char *cmd);
+
 /**
  * hsh - main shell loop
  * @info: the parameter & return info struct
@@ -22,7 +17,7 @@ int hsh(info_t *info, char **av)
 		clear_info(info);
 		if (interactive(info))
 			_puts("$ ");
-		_eputchar(BUFFER_FLUSH);
+		_eputchar(BUF_FLUSH);
 		r = get_input(info);
 		if (r != -1)
 		{
@@ -53,22 +48,22 @@ int hsh(info_t *info, char **av)
  * @info: the parameter & return info struct
  *
  * Return: -1 if builtin not found,
- *			0 if builtin executed successfully,
- *			1 if builtin found but not successful,
- *			-2 if builtin signals exit()
+ *                      0 if builtin executed successfully,
+ *                      1 if builtin found but not successful,
+ *                      -2 if builtin signals exit()
  */
 int find_builtin(info_t *info)
 {
 	int i, built_in_ret = -1;
 	builtin_table builtintbl[] = {
-		{"exit", my_exit},
-		{"env", my_env},
-		{"help", my_help},
-		{"history", my_history},
+		{"exit", _myexit},
+		{"env", _myenv},
+		{"help", _myhelp},
+		{"history", _myhistory},
 		{"setenv", _mysetenv},
 		{"unsetenv", _myunsetenv},
-		{"cd", my_cd},
-		{"alias", my_alias},
+		{"cd", _mycd},
+		{"alias", _myalias},
 		{NULL, NULL}
 	};
 
@@ -114,7 +109,7 @@ void find_cmd(info_t *info)
 	else
 	{
 		if ((interactive(info) || _getenv(info, "PATH=")
-			|| info->argv[0][0] == '/') && is_cmd(info, info->argv[0]))
+					|| info->argv[0][0] == '/') && is_cmd(info, info->argv[0]))
 			fork_cmd(info);
 		else if (*(info->arg) != '\n')
 		{
@@ -137,6 +132,7 @@ void fork_cmd(info_t *info)
 	child_pid = fork();
 	if (child_pid == -1)
 	{
+		/* TODO: PUT ERROR FUNCTION */
 		perror("Error:");
 		return;
 	}
@@ -149,6 +145,7 @@ void fork_cmd(info_t *info)
 				exit(126);
 			exit(1);
 		}
+		/* TODO: PUT ERROR FUNCTION */
 	}
 	else
 	{
@@ -161,3 +158,4 @@ void fork_cmd(info_t *info)
 		}
 	}
 }
+
