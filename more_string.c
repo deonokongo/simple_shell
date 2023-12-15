@@ -48,10 +48,8 @@ char *_strdup(const char *str)
 		return (NULL);
 
 	for (i = 0; i < length; i++)
-        duplicate[i] = str[i];
-
+		duplicate[i] = str[i];
 	duplicate[length] = '\0';
-
 	return (duplicate);
 }
 
