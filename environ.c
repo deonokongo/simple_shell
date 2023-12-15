@@ -87,9 +87,22 @@ int populate_env_list(info_t *info)
 	list_t *node = NULL;
 	size_t i;
 
-	for (i = 0; environ[i]; i++)
-		add_node_end(&node, environ[i], 0);
-	info->env = node;
-	return (0);
-}
+	size_t env_count = 0;
 
+	while (environ[env_count] != NULL)
+	{
+		env_count++;
+	}
+
+	for (i = 0; environ[i]; i++)
+	{
+		if (!node)
+		{
+			node = add_node_end(&node, environ[i], 0);
+		}
+		else
+		{
+			add_node_end(&node, environ[i], 0);
+		}
+	}
+}
