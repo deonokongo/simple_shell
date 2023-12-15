@@ -86,7 +86,15 @@ int populate_env_list(info_t *info)
 {
 	list_t *node = NULL;
 	size_t i;
+<<<<<<< HEAD
 		for (i = 0; environ[i]; i++)
+=======
+
+	for (i = 0; environ[i]; i++)
+	{
+		char *env_var = malloc(strlen(environ[i]) + 1);
+		if (env_var)
+>>>>>>> 931f0ba1619c19824fae8517bd6c585026299dee
 		{
 			char *env_var = malloc(strlen(environ[i]) + 1);
 				if (env_var)
@@ -98,4 +106,3 @@ int populate_env_list(info_t *info)
 		info->env = node;
 		return (0);
 }
-
