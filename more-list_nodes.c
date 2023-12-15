@@ -6,16 +6,16 @@
  *
  * Return: size of list
  */
-size_t list_len(const list_t *h)
+size_t list_len(const list_t *list)
 {
-	size_t i = 0;
+	size_t size = 0;
 
-	while (h)
+	while (list)
 	{
-		h = h->next;
-		i++;
+		list = list->next;
+		size++;
 	}
-	return (i);
+	return (size);
 }
 
 /**

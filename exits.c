@@ -7,27 +7,27 @@
  *@n: the amount of characters to be copied
  *Return: the concatenated string
  */
-char *_strncpy(char *dest, char *src, int n)
+char *_strncpy(char *dest, char *src, int size)
 {
 	int i, j;
-	char *s = dest;
+	char *str = dest;
 
 	i = 0;
-	while (src[i] != '\0' && i < n - 1)
+	while (src[i] != '\0' && i < size - 1)
 	{
 		dest[i] = src[i];
 		i++;
 	}
-	if (i < n)
+	if (i < size)
 	{
 		j = i;
-		while (j < n)
+		while (j < size)
 		{
 			dest[j] = '\0';
 			j++;
 		}
 	}
-	return (s);
+	return (str);
 }
 
 /**
