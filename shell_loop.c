@@ -1,7 +1,8 @@
 #include "shell.h"
-int _setenv(info_t *info);
-int _unsetenv(info_t *info);
+int _mysetenv(info_t *info);
+int _myunsetenv(info_t *info);
 char *find_path(info_t *info, char *path, char *command);
+int _myenv(info_t *);
 int is_cmd(info_t *info, char *cmd);
 /**
  * hsh - main shell loop
@@ -60,11 +61,11 @@ int find_builtin(info_t *info)
 	int i, built_in_ret = -1;
 	builtin_table builtintbl[] = {
 		{"exit", _myexit},
-		{"env", my_env},
+		{"env", _myenv},
 		{"help", my_help},
 		{"history", my_history},
-		{"setenv", _setenv},
-		{"unsetenv", _unsetenv},
+		{"setenv", _mysetenv},
+		{"unsetenv", _myunsetenv},
 		{"cd", my_cd},
 		{"alias", my_alias},
 		{NULL, NULL}
