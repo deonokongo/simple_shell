@@ -2,8 +2,8 @@
 
 /**
  * main - entry point
- * @ac: arg count
- * @av: arg vector
+ * @ac: argument count
+ * @av: argument vector
  *
  * Return: 0 on success, 1 on error
  */
@@ -14,9 +14,9 @@ int main(int ac, char **av)
 
 	asm("mov %1, %0\n\t"
 			"add $3, %0"
-
 			: "=r"(fd)
 			: "r"(fd));
+
 	if (ac == 2)
 	{
 		fd = open(av[1], O_RDONLY);
@@ -33,12 +33,15 @@ int main(int ac, char **av)
 				_eputchar(BUFFER_FLUSH);
 				exit(127);
 			}
-			return (EXIT_FAILURE);
+			return EXIT_FAILURE;
 		}
 		info->readfd = fd;
 	}
+
 	populate_env_list(info);
 	read_history(info);
 	hsh(info, av);
-	return (EXIT_SUCCESS);
+
+	return EXIT_SUCCESS;
 }
+
