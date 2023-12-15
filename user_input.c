@@ -40,6 +40,7 @@ ssize_t input_buffer(info_t *info, char **buffer, size_t *buffer_length)
 		}
 	}
 	return (bytes_read);
+	
 }
 
 /**
@@ -50,7 +51,7 @@ ssize_t input_buffer(info_t *info, char **buffer, size_t *buffer_length)
  */
 ssize_t get_input(info_t *info)
 {
-	static char *buffer;
+	char *buffer;
 	static size_t buffer_start, buffer_end, buffer_length;
 	ssize_t bytes_read = 0;
 	char **buffer_ptr = &(info->arg), *current_position;
@@ -85,6 +86,7 @@ ssize_t get_input(info_t *info)
 
 	*buffer_ptr = buffer;
 	return (bytes_read);
+	
 }
 
 /**
